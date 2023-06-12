@@ -50,6 +50,7 @@ end;
 if ~isfield(tune,'T0'), tune.T0 = n; end;
 
 
+% the number of random directions in MLS
 if ~isfield(tune,'R'), tune.R = n; end;
    
 

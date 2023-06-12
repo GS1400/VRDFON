@@ -17,6 +17,7 @@ if par.state==0
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%
   % the end of extrapolation %
   %%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+  
 
   [fb,ind] = min(point.extF); ind =ind(1);
 

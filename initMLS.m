@@ -8,9 +8,7 @@ function [point,par,step] = initMLS(point,step,par,tune)
 
 step.alist=[]; point.dlist=[]; 
 
-if isfield(tune,'C')
-   par.Iperm = randperm(point.n);
-end
+par.Iperm = randperm(point.n);
 
 par.ngood=0;
 

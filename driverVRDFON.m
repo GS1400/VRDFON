@@ -7,8 +7,7 @@
 % initMem.m     % must exist for each solver
 % VRBBONrun.m   % temporary; will ultimately be VRBBON.m
 
-solverPath = '/users/kimiaei/TEall/SOLVERS/VRDFON';
-eval(['addpath ',solverPath,'/minq8'])
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% driver.m %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -21,13 +20,18 @@ eval(['addpath ',solverPath,'/minq8'])
 
 clear
 clc
-rng('default')
+%rng('default')
+
+solverPath = input('add path:',"s");
 
 % standard initialization
 init.n=2;     % problem dimension
               % For tuning or to see intermediate results, 
               % a nonstandard initialization may be used.
               % For details see mintry.m
+              
+              
+init.paths = [solverPath,'/minq8'];
 
 mintry(init); % initialize mintry
 
@@ -36,7 +40,7 @@ fun=@(x)(x(1)-1)^2+100*(x(2)-x(1)^2)^2; % evaluate Rosenbrock function at x
 
 tune=[];
 
-st.prt=1; st.nfmax=5000; st.secmax=inf; st.farget=0; st.accf=1e-10;
+st.prt=2; st.nfmax=5000; st.secmax=inf; st.ftarget=0; st.accf=1e-4;
 
 % The following loop may be replaced by an arbitrarily complex 
 % computing environment. 
@@ -44,6 +48,7 @@ st.prt=1; st.nfmax=5000; st.secmax=inf; st.farget=0; st.accf=1e-10;
 % and/or check stopping tests 
 
 [xbest,fbest,info] = VRDFON(fun,x,st,tune)
+
 
 
     

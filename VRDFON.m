@@ -37,10 +37,16 @@
 % 
 function [xbest,fbest,info] = VRDFON(fun,x,st,tune);
 
+persistent finit
+
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%% initial checks %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
-prt=st.prt;
+if ~isfield(st,'prt')
+    prt=0;
+else
+   prt=st.prt;
+end
 
 if prt>=0,
   disp(' ')
@@ -71,8 +77,11 @@ if isfield(st,'ftarget'), info.ftarget=st.ftarget;
 else, info.ftarget=0;
 end;
 if isfield(st,'accf'), info.accf=st.accf;
-else, info.acc=-inf;
+else, info.accf=-inf;
 end;
+
+
+
 info.prt = prt; % print level
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% initialize solver environment %%%%
@@ -87,26 +96,23 @@ initTime=cputime;
 %%%%%%%%%%%%%%%%%%%
 %%%% main loop %%%%
 %%%%%%%%%%%%%%%%%%%
-nf=0;
+nf=1;
 while 1
   % get function value
   f=fun(x);
+  if nf==1, finit=f;end
   nf=nf+1;
   % get new point for function evaluation
   x         = VRDFONstep(x,f,prt);
   sec       = (cputime-initTime);
   info.done = (sec>st.secmax)|(nf>=st.nfmax);
-  if nf>1
-     qf        = abs((f-st.farget)/(finit-st.farget));
+  if nf>=1
+     qf        = abs((f-st.ftarget)/(finit-st.ftarget));
      info.qf   = qf;
      info.done = (info.done|info.qf<=st.accf);
-  else
-      finit = f;
   end
   info.sec  = sec;
-  if info.done,
-      break;
-  end;
+  if info.done,break; end;
 end;
 
 %%%%%%%%%%%%%%%%%%%%%
@@ -115,7 +121,7 @@ end;
 [xbest,fbest,info]=VRDFONstep;
 
 
-info.qf = abs((fbest-st.farget)/(finit-st.farget));
+info.qf = (fbest-st.ftarget)/(finit-st.ftarget);
 info.sec=sec;
 info.nf=nf;
 %%%%%%%%%%%%%%%%%%%%%%%%%%

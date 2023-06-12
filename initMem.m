@@ -47,6 +47,7 @@ function [point,step,par,info]=initMem(x,f,prt);
 % initialize structure with information about points and function values
 %
 % starting point
+
 if isempty(x)
   message = 'starting point must be defined';
   disp(message) 

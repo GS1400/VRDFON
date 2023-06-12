@@ -11,23 +11,12 @@
 function [point,step,par] = direction(point,step,par,tune)
 switch par.dir
     
-    
-    case 0 % scaled random direction
-        
-        step.p = rand(point.n,1)-0.5;
-        step.p = step.p/norm(step.p);
-    
-    case 1 % random approximate coordinate directions
+    case 1 % scaled random direction
         
         step.p = tune.gammar*(rand(point.n,1)-0.5);
-        if par.t>point.n
-           t  = mod( par.t,point.n);
-        else
-            t = par.t;
-        end
-        step.p(par.Iperm(t)) = 1 ;  
+        step.p(par.Iperm(par.t)) = 1 ;  
         step.p = step.p/norm(step.p);
-        
+    
    case 2 % random subspace direction
        
         alpha = rand(point.m,1)-0.5;
